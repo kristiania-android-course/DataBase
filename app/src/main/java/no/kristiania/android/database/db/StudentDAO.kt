@@ -56,6 +56,48 @@ class StudentDAO(context: Context) : BaseDataBase(context) {
         return studentList
     }
 
+    fun getRecordWithID(studentID: Long): Student {
+        val selection = "${StudentTable.COLUMN_ID} = ?"
+        val selectionArgs = arrayOf(studentID.toString())
+        val cursor: Cursor = readableDatabase.query(
+            StudentTable.TABLE_NAME,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+
+        return with(cursor) {
+            moveToFirst()
+            val id = getLong(getColumnIndexOrThrow(StudentTable.COLUMN_ID))
+            val name = getString(getColumnIndexOrThrow(StudentTable.COLUMN_NAME))
+            Student(id, name)
+        }
+    }
+
+    fun delete(studentID: Long): Int {
+        return writableDatabase.delete(
+            StudentTable.TABLE_NAME,
+            "${StudentTable.COLUMN_ID} = ?",
+            arrayOf(studentID.toString())
+        )
+    }
+
+    fun update(student: Student): Int {
+        // Use ContentValues to insert data
+        val contentValue = ContentValues().apply {
+            put(StudentTable.COLUMN_NAME, student.name)
+        }
+
+        return writableDatabase.update(
+            StudentTable.TABLE_NAME,
+            contentValue,
+            "${StudentTable.COLUMN_ID} = ?",
+            arrayOf(student.id.toString())
+        )
+    }
 
 
 }

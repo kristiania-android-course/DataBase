@@ -18,7 +18,11 @@ import no.kristiania.android.database.Student
  *
  * Date: 01 March 2020
  */
-class StudentAdapter(val context: Context, val studentList: List<Student>) :
+class StudentAdapter(
+    val context: Context,
+    val studentList: List<Student>,
+    val clickLambda: (Student) -> Unit
+) :
     RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
 
 
@@ -29,6 +33,9 @@ class StudentAdapter(val context: Context, val studentList: List<Student>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.student_item, null)
         val holder = StudentViewHolder(view)
+        holder.itemView.setOnClickListener {
+            clickLambda(studentList[holder.adapterPosition])
+        }
         return holder
     }
 

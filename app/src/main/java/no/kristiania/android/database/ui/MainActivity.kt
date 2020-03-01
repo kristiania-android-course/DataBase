@@ -1,5 +1,6 @@
 package no.kristiania.android.database.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -11,12 +12,12 @@ import no.kristiania.android.database.db.StudentDAO
 
 class MainActivity : AppCompatActivity() {
 
+    // Create Student DAO
+    val studentDAO = StudentDAO(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // Create Student DAO
-        val studentDAO = StudentDAO(this)
 
 
         // OnClick listener to button
@@ -31,19 +32,30 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Fetch list of students
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         val list = studentDAO.fetchAllRecord()
         for (item in list) {
             Log.d("MainActivity", "Id is ${item.id} and name is ${item.name}")
         }
 
         // Do your adapter implementation and then show the list in the screen.
-        val adapter = StudentAdapter(this, list)
+        val adapter = StudentAdapter(this, list) {
+            Toast.makeText(this, it.name, Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, StudentDetailsActivity::class.java)
+            intent.putExtra("studentID", it.id)
+            startActivity(intent)
+        }
         students_recycler_view.layoutManager = GridLayoutManager(this, 1)
         students_recycler_view.adapter = adapter
-
-
     }
 
-
-    // https://developer.android.com/reference/android/app/AlertDialog.Builder
+    override fun onDestroy() {
+        super.onDestroy()
+        studentDAO.close()
+    }
 }
