@@ -1,3 +1,14 @@
 package no.kristiania.android.database
 
-class Student(val id: Long, val name: String)
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "STUDENT_TABLE")
+data class Student(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "ID")
+    val id: Long,
+    @ColumnInfo(name = "NAME")
+    val name: String?
+)

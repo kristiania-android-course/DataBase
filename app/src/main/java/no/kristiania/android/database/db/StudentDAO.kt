@@ -1,9 +1,7 @@
 package no.kristiania.android.database.db
 
-import android.content.ContentValues
-import android.content.Context
-import android.database.Cursor
 import android.provider.BaseColumns
+import androidx.room.*
 import no.kristiania.android.database.Student
 
 // Mention table and column name
@@ -14,8 +12,31 @@ object StudentTable : BaseColumns {
     const val COLUMN_NAME = "NAME"
 }
 
+@Dao
+interface StudentDAO {
 
-class StudentDAO(context: Context) : BaseDataBase(context) {
+    @Insert
+    fun insert(student: Student)
+
+    @Update
+    fun update(student: Student)
+
+    @Delete
+    fun delete(student: Student)
+
+    @Query("SELECT * FROM STUDENT_TABLE")
+    fun fetchAllRecord(): List<Student>
+
+    @Query("SELECT * FROM STUDENT_TABLE where ID = :studentID")
+    fun getRecordWithID(studentID: Long): Student
+
+    /*Expected:
+    TableInfo{name='STUDENT_TABLE', columns={ID=Column{name='ID', type='INTEGER', affinity='3', notNull=true, primaryKeyPosition=1, defaultValue='null'}, NAME=Column{name='NAME', type='TEXT', affinity='2', notNull=false, primaryKeyPosition=0, defaultValue='null'}}, foreignKeys=[], indices=[]}
+    Found:
+    TableInfo{name='STUDENT_TABLE', columns={ID=Column{name='ID', type='INTEGER', affinity='3', notNull=false, primaryKeyPosition=1, defaultValue='null'}, NAME=Column{name='NAME', type='TEXT', affinity='2', notNull=false, primaryKeyPosition=0, defaultValue='null'}}, foreignKeys=[], indices=[]}*/
+
+
+/*
 
     // We haven't created table yet
 
@@ -106,7 +127,6 @@ class StudentDAO(context: Context) : BaseDataBase(context) {
             "${StudentTable.COLUMN_ID} = ?",
             arrayOf(student.id.toString())
         )
-    }
-
+    }*/
 
 }
