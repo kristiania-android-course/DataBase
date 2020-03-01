@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        // Fetch list of students
-
 
     }
 
@@ -46,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         // Do your adapter implementation and then show the list in the screen.
         val adapter = StudentAdapter(this, list) {
             Toast.makeText(this, it.name, Toast.LENGTH_SHORT).show()
+            // Intent to open new activity and pass student id
             val intent = Intent(this, StudentDetailsActivity::class.java)
             intent.putExtra("studentID", it.id)
             startActivity(intent)
@@ -56,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // Do close the db after use.
         studentDAO.close()
     }
 }

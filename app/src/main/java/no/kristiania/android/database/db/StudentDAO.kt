@@ -33,8 +33,6 @@ class StudentDAO(context: Context) : BaseDataBase(context) {
 
     // Fetch all the records from the database
     fun fetchAllRecord(): List<Student> {
-        /*val selection : String = "${StudentTable.COLUMN_NAME} = ?"
-        val selectionArgs : Array<String> = arrayOf("Arun Pillai")*/
 
         val cursor: Cursor = readableDatabase.query(
             StudentTable.TABLE_NAME,
@@ -57,8 +55,12 @@ class StudentDAO(context: Context) : BaseDataBase(context) {
     }
 
     fun getRecordWithID(studentID: Long): Student {
+        // where clause to use
         val selection = "${StudentTable.COLUMN_ID} = ?"
+
+        // arguments for the where clause
         val selectionArgs = arrayOf(studentID.toString())
+
         val cursor: Cursor = readableDatabase.query(
             StudentTable.TABLE_NAME,
             null,
@@ -71,13 +73,17 @@ class StudentDAO(context: Context) : BaseDataBase(context) {
 
         return with(cursor) {
             moveToFirst()
+            // Please see the cursor documentation for these methods
             val id = getLong(getColumnIndexOrThrow(StudentTable.COLUMN_ID))
             val name = getString(getColumnIndexOrThrow(StudentTable.COLUMN_NAME))
             Student(id, name)
         }
     }
 
+    // delete
     fun delete(studentID: Long): Int {
+        // Return number of rows affected, so if this is greater than zero
+        // the operation is successful
         return writableDatabase.delete(
             StudentTable.TABLE_NAME,
             "${StudentTable.COLUMN_ID} = ?",
@@ -85,12 +91,15 @@ class StudentDAO(context: Context) : BaseDataBase(context) {
         )
     }
 
+    // Update
     fun update(student: Student): Int {
         // Use ContentValues to insert data
         val contentValue = ContentValues().apply {
             put(StudentTable.COLUMN_NAME, student.name)
         }
 
+        // Return number of rows affected, so if this is greater
+        // than zero the operation is successful
         return writableDatabase.update(
             StudentTable.TABLE_NAME,
             contentValue,
