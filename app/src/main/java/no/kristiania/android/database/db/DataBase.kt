@@ -13,6 +13,7 @@ abstract class BaseDataBase : RoomDatabase() {
 
     abstract fun studentDAO(): StudentDAO
 
+    //Singleton db object
     companion object {
         var db: BaseDataBase? = null
 
