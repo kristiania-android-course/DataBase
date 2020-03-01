@@ -1,8 +1,10 @@
 package no.kristiania.android.database.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import no.kristiania.android.database.R
 import no.kristiania.android.database.db.StudentDAO
@@ -29,6 +31,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Fetch list of students
+        val list = studentDAO.fetchAllRecord()
+        for (item in list) {
+            Log.d("MainActivity", "Id is ${item.id} and name is ${item.name}")
+        }
+
+        // Do your adapter implementation and then show the list in the screen.
+        val adapter = StudentAdapter(this, list)
+        students_recycler_view.layoutManager = GridLayoutManager(this, 1)
+        students_recycler_view.adapter = adapter
+
 
     }
 
