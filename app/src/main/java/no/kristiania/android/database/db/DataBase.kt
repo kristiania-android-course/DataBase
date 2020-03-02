@@ -8,14 +8,14 @@ val DATABASE_VERSION: Int = 1
 val DATABASE_NAME: String = "students_database"
 
 
-open class BaseDataBase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+open class BaseDataBase(val context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
-    // Create student table query
 
-    // Will get called on creation of the database
     override fun onCreate(db: SQLiteDatabase?) {
-        // Execute sql query
-
+        val query =
+            "CREATE TABLE ${StudentTable.TABLE_NAME} (${StudentTable.COLUMN_ID} INTEGER PRIMARY KEY , ${StudentTable.COLUMN_NAME} TEXT)"
+        db?.execSQL(query)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
