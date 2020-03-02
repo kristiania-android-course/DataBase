@@ -18,17 +18,26 @@ import no.kristiania.android.database.Student
  *
  * Date: 02 March 2020
  */
-class StudentAdapter(val context: Context, val studentList: List<Student>) :
+class StudentAdapter(
+    val context: Context,
+    val studentList: List<Student>,
+    val function: (Student) -> Unit
+) :
     RecyclerView.Adapter<StudentAdapter.StudentHolder>() {
 
 
     class StudentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.student_item, null)
         val holder = StudentHolder(view)
+
+
+        holder.itemView.setOnClickListener {
+            val item = studentList[holder.adapterPosition]
+            function(item)
+        }
         return holder
     }
 

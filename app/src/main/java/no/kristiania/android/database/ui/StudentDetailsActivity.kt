@@ -14,6 +14,8 @@ class StudentDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_student_details)
         // get student id from extras
 
+        val id = intent.getLongExtra("studentID", 0)
+
         // Get student record from db using student id and set to edit-text
 
 

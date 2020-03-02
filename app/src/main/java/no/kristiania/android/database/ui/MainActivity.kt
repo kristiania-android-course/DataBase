@@ -1,7 +1,7 @@
 package no.kristiania.android.database.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,13 +33,18 @@ class MainActivity : AppCompatActivity() {
         // fetch data
         val list = studentDAO.fetchingAllRecord()
 
-        for (item in list) {
-            Log.d("MainActivity", item.toString())
-        }
-
         // Do your adapter implementation and then show the list in the screen.
 
-        val adapter = StudentAdapter(this, list)
+        val adapter = StudentAdapter(this, list) { std ->
+            Toast.makeText(this, std.name, Toast.LENGTH_SHORT).show()
+
+            Intent(this, StudentDetailsActivity::class.java).apply {
+                putExtra("studentID", std.id)
+            }.also {
+                startActivity(it)
+            }
+
+        }
         students_recycler_view.layoutManager = LinearLayoutManager(this)
         students_recycler_view.adapter = adapter
 
