@@ -30,6 +30,13 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         // fetch data
         val list = studentDAO.fetchingAllRecord()
 
@@ -47,9 +54,5 @@ class MainActivity : AppCompatActivity() {
         }
         students_recycler_view.layoutManager = LinearLayoutManager(this)
         students_recycler_view.adapter = adapter
-
-
-
-
     }
 }
